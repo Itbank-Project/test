@@ -1,0 +1,13 @@
+MAVEN의 dependency
+
+프로젝트가 포함해야하는 라이브러리에 대한 의존성
+
+project가 ojdbc8-xxx.xxx.jar 파일을 포함해야 한다
+
+==> pom.xml <==
+
+<dependency>
+    <groupId>com.oracle.database.jdbc</groupId>
+    <artifactId>ojdbc8</artifactId>
+    <version>19.8.0.0</version>
+</dependency>
