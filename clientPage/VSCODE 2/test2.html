@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지도전까지 ~ </title>
+    <style>
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            margin-left: 53%;
+        }
+        .modal_overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+        .modal_content{
+            background-color: white;
+            width: 320px;
+            height: 110px;
+            border: 1px solid gray;
+            padding: 10px;
+
+        }
+        .hidden {
+            display: none;
+        }
+        .cIjWgG {
+            position: fixed;
+            z-index: 5;
+            left: 0px;
+            right: 0px;
+            max-width: 728px;
+            width: 90%;
+            margin: 0px auto;
+            cursor: pointer;
+            border-radius: 2px;
+            height: 56px;
+            background-color: rgb(219, 7, 74);
+            box-shadow: rgb(219 7 74 / 30%) 0px 2px 6px 0px;
+            text-align: center;
+            bottom: 10px;
+        }
+        .cIjWgG .fixed-wrapper {
+            position: relative;
+            height: 100%;
+        }
+        .cIjWgG .innerButton .tooltip-wrapper {
+            position: absolute;
+            top: -69px;
+            left: 50%;
+            margin-left: -130px;
+        }
+        .cIjWgG .innerButton .hidden {
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s ease 0.2s, opacity 0.2s ease-in-out 0s;
+        }
+        .cIjWgG .innerButton .tooltip-wrapper img {
+            display: block;
+            width: 260px;
+            height: 69px;
+        }
+        fieldset, img {
+            border: 0;
+        }
+        img {
+            max-width: 100%;
+            vertical-align: top;
+        }
+        .cIjWgG .txt {
+            font-size: 18px;
+            color: white;
+            font-weight: 700;
+            line-height: 56px;
+        }
+
+        #checkIn-checkOut {
+            height: 125px;
+            
+            padding-top: 20px;
+            padding-bottom: 10px;
+        }
+        #checkIn-checkOut  h1{
+            color: #4D4D4D;
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.33;
+            height: 26px; 
+    
+        }
+        #check {
+            display: flex;
+            text-align: center;
+            padding-top: 20px;
+        }
+        #check-in {
+            border-right: 1px solid black;
+        }
+        #check-in,#check-out {
+            width: 364px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        /* 여기서 부터 금/흡연 여부 */
+        .static-item {
+            padding-top: 30px;
+            padding-bottom: 30px;
+        }
+        .static-item h1 {      
+            color: #4D4D4D;
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.33;
+            height: 26px;
+        }
+        .static-item ul {
+            margin-top: 20px;
+            list-style-type: none!important;
+        }   
+        .static-item ul li {
+            /* display: block;  이거 때문에 display:none이 먹히지 않았음*/ 
+            margin: 0 16px;
+            font-size: 14px;
+            line-height: 1.64;
+            color: #4d4d4d;
+            list-style-type: none;
+            position: relative;
+        }
+        .static-item ul li:before {
+            position: absolute;
+            content: "";
+            width: 3px;
+            height: 3px;
+            background-color: #333;
+            top: 10px;
+            left: -13px;
+            border-radius: 100%;
+        }
+        /* 부대 시설정보 */
+        .static-item, .sub-title:nth-child(n+2) {
+            margin-top: 20px;
+        }
+        .static-item, .sub-title {
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.44;
+            color: #4d4d4d;
+        }
+        .static-item ul{
+            display: block;
+            line-height: 1.64;
+        }
+        .unvisible, .more-enter-done {
+            display: block;
+            line-height: 1.64;
+        }
+        .static-item ul li:nth-child(n+2) {
+            margin-top: 14px;
+        }
+        .static-item ul li {
+            margin: 0 16px;
+            font-size: 14px;
+            color: #4d4d4d;
+            list-style-type: none;
+            position: relative;
+        } 
+        .static-item .show-more-btn{
+            margin: 14px 0 0 16px;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.64;
+            color: #db074a;
+            cursor: pointer;
+        }  
+        .more-enter-done{
+            display: none;
+    
+        }
+        /* 조식 정보 */
+        .info-table h1 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .info-table h1 span {
+            font-size: 12px;
+            line-height: 1.33;
+            text-align: right;
+            color: #888;
+        }
+        .info-table .info-item table {
+            width: 100%;
+            border: 1px solid #f0f0f0;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+        table {
+            display: table;
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+      
+        button, input, select, table, textarea {
+            font-size: inherit;
+            font-family: inherit;
+            line-height: inherit;
+        }
+        .info-table .info-item table tr {
+            height: 44px;
+        }
+        td, th, tr {
+            padding: 0;
+            margin: 0;
+            border: 1px solid #888;;
+        }
+        tr {
+            display: table-row;
+        }
+        .info-table .info-item table tr td:first-child {
+            font-size: 12px;
+            line-height: 1.33;
+            color: #888;
+            width: 146px;
+            background-color: #f8f8f9;
+        }
+        .info-table .info-item table tr td {
+            vertical-align: middle;
+            text-indent: 12px;
+        }
+        td, th {
+            display: table-cell;
+        }
+        td, th, tr {
+            padding: 0;
+            margin: 0;
+        }
+       
+        /* 판매자 정보*/
+        a, a:link {
+        text-decoration: none;
+        }
+        a {
+            color: inherit;
+        }
+        .seller-info-box {
+            background-color: #fff;
+            border-top: 10px solid #f6f7f8;
+            border-bottom: 10px solid #f6f7f8;
+        }
+        .seller-info-box p {
+            position: relative;
+            font-size: 20px;
+            color: #4d4d4d;
+            line-height: 1.2;
+            font-weight: 700;
+            padding: 18px 20px;
+            border-bottom: 1px solid #e6ebef;
+        }
+
+        /* 무엇을 도와드릴까요?*/
+        .councierge {
+            padding-top: 30px;
+            padding-bottom: 48px;
+            text-align: center;
+        }
+       .detail-title {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1.33;
+            color: #4d4d4d;
+        }
+        .councierge .help-text {
+            margin-bottom: 16px;
+            color: #666;
+        }
+        .councierge .help-time {
+            margin-bottom: 16px;
+            color: #4d4d4d;
+            line-height: 21px;
+        }
+        .councierge .help-inquiry {
+            width: 100%;
+            height: 44px;
+            border: 1px solid #e7e7e7;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .councierge .help-inquiry img {
+            width: 20px;
+            height: 20px;
+            margin-right: 7px;
+        }
+        img {
+            max-width: 100%;
+            vertical-align: top;
+        }
+       
+  
+
+    </style>
+</head>
+<body>
+
+    <div class="modal hidden">
+        <div class="modal_overlay"></div>   <!--나머지 배경 어둡게 만드는 영역-->
+        <div class="modal_content">         <!--표시하고 싶은 내용-->
+            <div style="display: flex; justify-content: space-between;">
+                <div style="font-size: 13pt; font-weight: bold;">로그인 해주세요</div>
+                <div><img id="close_submenu" height="24px" src="https://cdn.dailyhotel.com/ux/common-close-ic-gray@2x.png"></div>
+            </div>
+            <div style="font-size: 9pt; margin: 10px 0 10px;">
+                자바호텔 회원가입하시고 다양한 혜택을 누리세요.
+            </div>
+            <div>
+                <button style="border:0; background-color: #f53b57; color: white; width: 150px; height: 40px;">로그인</button>
+                <button style="border:0; background-color: #f53b57; color: white; width: 150px; height: 40px;">회원가입</button>
+            </div>
+            
+        </div>
+    </div>
+
+    <div style="width: 768px; margin: auto; height:45px; display: flex; justify-content: space-between; margin-bottom: 10px;">
+        
+        <!-- 날짜 선택하고 객실 보기 -->
+        <div class="Floating__StyledFloatingBtnRedBot-ej6lt-0 cIjWgG">
+            <div class="fixed-wrapper">
+                <div class="innerButton">
+                    <div class="tooltip-wrapper hidden">
+                        <img src="https://cdn.dailyhotel.com/ux/btn-big-red-tooltip@2x.png"
+                            srcset="https://cdn.dailyhotel.com/ux/btn-big-red-tooltip@3x.png" alt>
+                    </div>
+                    <span class="txt">날짜 선택하고 객실 보기</span>
+                </div>
+            </div>
+        </div>
+
+        <div style="font-size: 15pt; margin-top: 10px;">JAVA</div>
+        <div style="display: flex; ">
+            <div>
+                <img height="40px" src="https://cdn.dailyhotel.com/ux/nav-search-ic@2x.png">
+            </div>
+            <div>
+                <img id="open_submenu" height="40px" src="https://cdn.dailyhotel.com/ux/nav-short-ic@2x.png">
+            </div>
+        </div>
+    </div>
+
+    <div style="width: 768px; margin: auto;">
+        <div>
+            <img src="http://221.164.9.222/img/iu.jpg" width="100%" height="300px">
+        </div>
+        <div>
+            <h2><sub>호텔 등급</sub><br>여기는 호텔이름</h2>
+            <h4>금액 원부터 ~ <br><sub>(?월 ?일 투숙 기준)</sub></h3>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+            <div>데일리 트루어워즈 🌿 최고의 호텔 / 리조트 🌿 </div>
+            <input id="awords" type="button" value="⍰">
+        </div>
+        <div>
+            <p style="font: bold;">트루리뷰 👍 ? % (? 명 평가)</p>
+            <input style="width: 100%;" type="button" value="?개 리뷰 더보기 (누르면 리뷰 촤르륵)">
+        </div>
+        <div>
+            <p>객실 선택</p>
+            
+            <div class="slideshow-container">
+                <div class="mySlides fade">
+                    <img src="room1.jpg" style="width: 100%; height: 350px;">
+                </div>
+                
+                <div class="mySlides fade">
+                    <img src="room2.png" style="width: 100%; height: 350px;">
+                </div>
+                
+                <div class="mySlides fade">
+                    <img src="room3.jpg" style="width: 100%; height: 350px;">
+                </div>
+  
+                <div class="mySlides fade">
+                    <img src="room4.jpg" style="width: 100%; height: 350px;">
+                </div> 
+
+
+            </div>
+        
+            <br>
+        
+            <div style="text-align: center;">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+
+
+
+           
+            <p>캘린더에서 날짜를 선택하시고 특가 객실을 확인하세요.</p>
+        </div>
+        <div>
+            <div style="text-align: center;">
+                <p>호텔 마크 자리</p>
+                <p>호텔명's comment</p>
+            </div>
+            <div>
+                <p>01   설명</p>
+                <p>02   설명</p>
+                <p>03   설명</p>
+            </div>
+        </div>
+        <div>
+            <p>업장 내 편의시설<br>· 객실수 : 538개</p>
+            <div>checkedList</div>
+        </div>
+
+        <!-- 대표 체크인 부터 -->
+        <div id="checkIn-checkOut">
+            <h1 >대표 체크인/체크아웃 시간</h1>
+            <div id="check">
+                <div id="check-in">
+                    <span style="font-size: 14px; color: #888888">체크인<br></span>
+                    <span style="font-size: 16px; color: #4D4D4D;">15:00</span>
+                </div>
+                <div id="check-out">
+                    <span style="font-size: 14px; color: #888888">체크아웃<br></span>
+                    <span style="font-size: 16px; color: #4D4D4D;">11:00</span>                
+                </div>
+            </div>    
+        </div>
+        <hr>
+
+        <!-- 금/흡연 여부 -->
+        <div class="static-item">
+            <h1>금/흠연 여부</h1>
+            <ul class="lists">
+                <li>전 객실 금연실</li>
+            </ul>            
+        </div>
+        <hr>
+
+        <!-- 부대시설 정보 -->        
+        <div class="static-item">
+            <h1>부대시설 정보</h1>
+            <ul class="lists">
+                <li>피트니스, 스파, 사우나, 미팅룸, 실내수영장, 실외수영장(roof top)</li>
+                <li>식음시설 : 1층 레스토랑, 풀사이드 바, 편의점, 각종 근린 생활시설</li>
+                <h2 class="sub-title">쉘팩토리(Shell Factory)</h2>
+                <li class="unvisible more-enter-done">사회적 거리두기 단계에 따라 운영시간이 변경될 수 있습니다.</li>
+                <li class="unvisible more-enter-done">운영시간 : 07:00 ~ 22:00(금~토 23:00)</li>
+                <li class="unvisible more-enter-done">조식 : 07:00 ~ 10:30</li>
+                <li class="unvisible more-enter-done">성인 25,000원, 8세 ~ 13세 13,000원, 4세 ~ 7세 10,000원, 4세 이하 무료</li>
+                <li class="unvisible more-enter-done">점심&저녁 단품식사 : 11:00 ~ 22:00(금~토 23:00)</li>
+                <li class="unvisible more-enter-done">해당 호텔 결혼식 및 피로연 등으로 레스토랑 이용이 어려울 수 있으므로 예약하신 일정에 호텔로 확인해주시기 바랍니다</li>
+                <h2 class="sub-title unvisible more-enter-done">사우나</h2>
+                <li class="unvisible more-enter-done">사회적 거리두기 단계에 따라 운영시간이 변경될 수 있습니다.</li>
+                <li class="unvisible more-enter-done">06:00 ~ 21:00 이용 가능 / North Tower 지하2층</li>
+                <li class="unvisible more-enter-done">매월 첫번째 수요일 정기점검일입니다.</li>
+                <li class="unvisible more-enter-done">이용요금 : 일반요금 15,000원 / 투숙객 할인요금 10,000원 (소인 5,000원)</li>
+                <li class="unvisible more-enter-done">분실 위험이 있는 귀중품은 리셉션 데스크에 보관해 주시기 바랍니다.</li>
+                <li class="unvisible more-enter-done">쾌적한 환경을 위하여 외부음식 반입을 삼가하여 주시기 바랍니다.</li>
+                <li class="unvisible more-enter-done">사우나 소인기준 36개월~7세까지 / 7세이하는 반드시 보호자 동반입장으로만 이용 가능합니다.</li>
+                <h2 class="sub-title unvisible more-enter-done">피트니스 센터</h2>
+                <li class="unvisible more-enter-done">사회적 거리두기 단계에 따라 운영시간이 변경될 수 있습니다.</li>
+                <li class="unvisible more-enter-done">이용요금 10,000원</li>
+                <li class="unvisible more-enter-done">이용시간 : 07:00 ~ 22:00 (주중,주말 동일)</li>
+                <li class="unvisible more-enter-done">장소 : North Tower 20층 위치</li>
+                <li class="unvisible more-enter-done">객실 투숙객 및 회원 전용 시설입니다. (투숙객2인 무료이용)</li>
+                <li class="unvisible more-enter-done">분실위험이 있는 귀중품은 리셉션 데스크에 보관해 주시기 바랍니다.</li>
+                <li class="unvisible more-enter-done">쾌적한 환경을 위하여 외부 음식 반입을 삼가하여 주시기 바랍니다.</li>
+                <h2 class="sub-title unvisible more-enter-done">만 18세이상 고객에 한하여 입장이 가능합니다.</h2>
+            </ul>
+            <div class="show-more-btn">더보기</div>
+        </div>
+        <hr>
+
+        <!-- 예약 시 참고사항-->
+        <div class="static-item">
+            <h1>예약 시 참고사항</h1>
+            <ul class="lists">
+                <h2 class="sub-title">객실당 2인기준으로 1인 인원 추가시 22,000원의 금액이 현장추가결제됩니다.(최대인원 초과 시 입실이 불가합니다.)</h2>
+                <li>부모동반 아동투숙 가능</li>
+                <li>엑스트라베드 추가 불가 </li>
+                <h2 class="sub-title">플라스틱 없는 호텔 만들기</h2>
+                <li>스카이베이 호텔 경포는 강원도 최초 "친환경 호텔"로 한걸음 더 내딛기 위해 2020년 2월 16일부터 칫솔, 치약, 면도기, 슬리퍼 등 일회용품 제공이 불가합니다.(욕실용품4종&비누 제공)</li>
+            </ul>
+        
+        </div>
+        <hr>
+        <!--인피니티풀 정보-->
+        <div class="static-item">
+            <h1>인피티니풀 정보</h1>
+            <ul class="lists">
+                <h2 class="sub-title">인피니티 풀(유료시설)</h2>
+                <li>사회적 거리두기 단계에 따라 운영시간이 변경될 수 있습니다.</li>
+                <li>운영시간 : 07:00~22:00 (주중, 주말 동일)</li>
+                <li >이용장소 : North Tower 20층</li>
+                <li>운영 시간은 계절 및 기상상황에 따라 상이할 수 있습니다.</li>
+                <li>인피니티풀 크기 : 길이 25m x 너비 6m x 깊이 1.3m</li>
+                <li>실내수영장 크기 : 길이 20m x 너비 5m x 깊이 1.3m</li>
+                <li>요금 : 성인 60,000원, 소인 50,000원</li>
+                <li>투숙객 요금:성인 30,000원 , 3세 ~ 13세 20,000원 (여름 성수기(7~8월) 성인 40,000원, 3세 ~ 13세 30,000원)</li>
+                <li>명시된 요금은 1일 이용 기준 입니다.</li>
+                <li>시즌 및 상품에 따라 요금인 상이할 수 있습니다.</li>
+                <li>구명조끼 대여 가능(수량제한으로 선착순 제공)하며, 수영복 대여 서비스는 제공되지 않습니다.</li>
+                <li>모든 고객의 안전을 위해 튜브 및 물놀이 기구 사용을 금합니다.(유아용 퍼들 점퍼 및 목튜브 이용은 가능합니다.)</li>
+                <li>쾌적한 환경을 위하여 음식물 반입, 흡연, 오일 사용을 금하고 있습니다.</li>
+            </ul>
+        </div>
+        <hr>
+
+        <!-- 조식 정보 -->
+        <div class="info-table break-fast static-item">
+            <h1>조식 정보
+                <span>*조식 요금 현장 결제 필요</span>
+            </h1>
+            <div class="info-item">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>유아(4~7세 이하)</td>
+                            <td>
+                                <span>10,000원</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>소아(8~13세 이하)</td>
+                            <td>
+                                <span>13,000원</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>성인(14세 이상)</td>
+                            <td>
+                                <span>25,000원</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+                <ul>
+                    <li>나이는 한국나이 기준이며, 업체 사정에 의해 변경될 수 있습니다.</li>
+                    <li>사회적 거리두기 단계에 따라 이용장소가 변경될 수 있습니다.</li>
+                    <li>장소 : 1층 쉘팩토리</li>
+                    <li>이용시간 : 07:00 ~ 10:30 조식뷔페</li>
+                    <li>**코로나19 사회적 거리두기로 호텔에서 제공하는 조식이 도시락 단품으로 변경 될 수 도 있습니다.</li>
+                </ul>
+        </div>
+        <hr>
+
+        <!-- 취소 및 환불 규정-->
+        <div class="padding-wrapper">
+            <div class="static-item">
+                <h1>취소 및 환불 규정</h1>
+                <ul class="lists">
+                    <li>환불 정책(기본)</li>
+                    <li>투숙일 2일전 17:00 ~ 투숙일 당일까지: 환불불가</li>
+                    <li>투숙일 3일전 17:00 ~ 투숙일 2일전 16:59 까지: 50% 환불</li>
+                    <li>투숙일 4일전 17:00 ~ 투숙일 3일전 16:59 까지: 70% 환불</li>
+                    <li>투숙일 4일전 16:59 까지 무료취소</li>
+                    <li>취소가능일은 달력일 (주말 및 공휴일 포함)기준으로 산정됩니다.</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <!-- 확인사항-->
+        <div class="padding-wrapper">
+            <div class="static-item">
+                <h1>확인사항</h1>
+                <ul class="lists">
+                    <li>'체크인 시 배정'의 경우 특정 객실과 베드타입을 보장하지 않습니다.</li>
+                    <li>상기 이미지와 다른 객실로 배정될 수 있으며, 객실 전망은 보장하지 않습니다.</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <!-- 판매자 정보-->
+        <a href="sellerInformation.html">
+            <div class="seller-info-box">
+                <p>판매자 정보</p>
+            </div>
+        </a>
+        
+        <!-- 무엇을 도와드릴까요?-->
+        <div class="padding-wrapper">
+            <div class="councierge">
+                <h4 class="detail-title">무엇을 도와드릴까요?</h4>
+                <div class="help-text">데일리호텔 고객센터가 친절하고 신속하게 답변해드려요.</div>
+                <div class="help-time">상담시간: 오전 9시 ~ 익일 새벽 3시</div>
+                <div class="help-inquiry">
+                    <img src="https://cdn.dailyhotel.com/ux/icon-detail-ops-help.svg" alt="고객센터 문의하기">
+                    고객센터 문의하기
+                </div>
+                <p></p>
+            </div>
+        </div>
+            
+    
+    </div>
+
+    <script>
+
+        // 서브메뉴 (모달창)
+        const open_submenu = document.getElementById('open_submenu');
+        const close_submenu = document.getElementById('close_submenu');
+        const modal = document.querySelector('.modal');
+        const overlay = document.querySelector('.modal_overlay');
+
+    
+        open_submenu.onclick = function(){
+            modal.classList.remove('hidden');
+        }
+
+        close_submenu.onclick = function(){
+            console.log('닫자');
+            modal.classList.add('hidden');
+        }
+
+        overlay.onclick = function() {
+            modal.classList.add('hidden');
+        }
+
+        // 더보기 눌렀을 때 글 나오게하기
+        const showBtn = document.querySelector('.show-more-btn');
+       
+        const unvisible = document.querySelectorAll('.unvisible');
+
+        showBtn.onclick = function (){
+            unvisible.forEach((ele) => {
+                ele.classList.remove('more-enter-done');
+                showBtn.innerHTML = '';
+            })
+        }
+
+
+        // 객실 사진 슬라이드
+        var slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("dot");
+            for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";  
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) {slideIndex = 1}    
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex-1].style.display = "block";  
+            dots[slideIndex-1].className += " active";
+            setTimeout(showSlides, 2500); // 2.5초마다 이미지 바뀜
+        }
+
+    </script>
+
+
+</body>
+</html>
+
+
+
+
+
+
+
+    
+</body>
+</html>
